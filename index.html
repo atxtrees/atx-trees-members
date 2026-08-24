@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ATX Trees — My Account</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bark:#1a0e06;
+  --soil:#2d1a0a;
+  --moss:#1e3010;
+  --leaf:#3a6020;
+  --lime:#7aaa40;
+  --gold:#c8962a;
+  --cream:#f0ead8;
+  --sand:#d4c9a8;
+  --mist:#e8f0e0;
+  --text:#1a0e06;
+  --textl:#5a4a30;
+}
+body{background:var(--cream);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;}
+
+/* LOGIN SCREEN */
+#login-screen{
+  min-height:100vh;
+  background:linear-gradient(160deg,var(--bark) 0%,var(--moss) 60%,var(--leaf) 100%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+.login-box{
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(122,170,64,0.3);
+  border-radius:20px;
+  padding:48px 40px;
+  max-width:420px;width:100%;
+  backdrop-filter:blur(10px);
+  text-align:center;
+}
+.login-logo{font-size:48px;margin-bottom:12px;}
+.login-title{font-family:'Playfair Display',serif;font-size:28px;color:#fff;margin-bottom:6px;}
+.login-sub{font-size:13px;color:rgba(255,255,255,0.5);margin-bottom:32px;line-height:1.6;}
+.login-tagline{
+  background:rgba(122,170,64,0.15);
+  border:1px solid rgba(122,170,64,0.3);
+  border-radius:10px;
+  padding:12px 16px;
+  font-size:12px;
+  color:var(--lime);
+  margin-bottom:28px;
+  line-height:1.5;
+}
+.login-input{
+  width:100%;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:10px;
+  padding:14px 16px;
+  font-size:15px;
+  color:#fff;
+  margin-bottom:12px;
+  outline:none;
+  transition:border-color .2s;
+  font-family:'Inter',sans-serif;
+}
+.login-input::placeholder{color:rgba(255,255,255,0.35);}
+.login-input:focus{border-color:var(--lime);}
+.login-btn{
+  width:100%;
+  background:var(--lime);
+  color:var(--bark);
+  border:none;
+  border-radius:10px;
+  padding:15px;
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+  margin-top:8px;
+  transition:background .2s;
+  font-family:'Inter',sans-serif;
+}
+.login-btn:hover{background:#8aba50;}
+.login-footer{margin-top:24px;font-size:11px;color:rgba(255,255,255,0.3);line-height:1.6;}
+
+/* APP LAYOUT */
+#app{display:none;min-height:100vh;background:var(--cream);}
+.app-header{
+  background:var(--bark);
+  padding:16px 20px;
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:100;
+}
+.app-header-logo{font-size:24px;}
+.app-header-title{font-family:'Playfair Display',serif;color:#fff;font-size:18px;flex:1;}
+.app-header-name{font-size:11px;color:var(--lime);font-weight:600;}
+.member-badge{
+  background:var(--lime);
+  color:var(--bark);
+  font-size:9px;
+  font-weight:700;
+  padding:3px 8px;
+  border-radius:20px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav{
+  position:fixed;bottom:0;left:0;right:0;
+  background:var(--bark);
+  display:flex;
+  border-top:1px solid rgba(122,170,64,0.2);
+  z-index:100;
+}
+.nav-item{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  padding:10px 4px 14px;
+  cursor:pointer;
+  border:none;background:none;
+  color:rgba(255,255,255,0.4);
+  font-size:9px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.5px;
+  transition:color .2s;
+  font-family:'Inter',sans-serif;
+}
+.nav-item.active{color:var(--lime);}
+.nav-item span{font-size:20px;margin-bottom:3px;}
+
+/* PAGES */
+.page{display:none;padding:20px 16px 100px;}
+.page.active{display:block;}
+
+/* HOME PAGE */
+.welcome-card{
+  background:linear-gradient(135deg,var(--bark),var(--moss));
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:16px;
+  color:#fff;
+}
+.welcome-greeting{font-size:13px;color:rgba(255,255,255,0.6);margin-bottom:4px;}
+.welcome-name{font-family:'Playfair Display',serif;font-size:24px;color:#fff;margin-bottom:8px;}
+.welcome-status{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(122,170,64,0.2);
+  border:1px solid rgba(122,170,64,0.4);
+  border-radius:20px;
+  padding:5px 12px;
+  font-size:11px;color:var(--lime);font-weight:600;
+}
+.welcome-dot{width:6px;height:6px;border-radius:50%;background:var(--lime);}
+
+.next-service-card{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:12px;
+  border-left:4px solid var(--lime);
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+}
+.nsc-label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--textl);margin-bottom:6px;font-weight:600;}
+.nsc-title{font-size:16px;font-weight:700;color:var(--text);margin-bottom:4px;}
+.nsc-date{font-size:13px;color:var(--leaf);font-weight:600;}
+.nsc-desc{font-size:12px;color:var(--textl);margin-top:6px;line-height:1.5;}
+
+.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.quick-card{
+  background:#fff;
+  border-radius:14px;
+  padding:16px;
+  text-align:center;
+  cursor:pointer;
+  border:1px solid rgba(0,0,0,0.06);
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  transition:transform .15s;
+}
+.quick-card:active{transform:scale(0.97);}
+.quick-card-icon{font-size:28px;margin-bottom:8px;}
+.quick-card-title{font-size:12px;font-weight:600;color:var(--text);}
+.quick-card-sub{font-size:10px;color:var(--textl);margin-top:2px;}
+
+/* SECTION HEADERS */
+.sec-header{
+  font-family:'Playfair Display',serif;
+  font-size:20px;
+  color:var(--bark);
+  margin-bottom:14px;
+  margin-top:4px;
+}
+.sec-sub{font-size:12px;color:var(--textl);margin-top:-10px;margin-bottom:14px;}
+
+/* SCHEDULE PAGE */
+.season-card{
+  background:#fff;
+  border-radius:14px;
+  margin-bottom:12px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+}
+.season-header{
+  padding:14px 18px;
+  display:flex;align-items:center;gap:10px;
+}
+.season-icon{font-size:22px;}
+.season-name{font-weight:700;font-size:15px;flex:1;}
+.season-status{
+  font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  text-transform:uppercase;letter-spacing:.5px;
+}
+.status-upcoming{background:#e8f5e0;color:#3a6020;}
+.status-active{background:#fff3d0;color:#8a5a00;}
+.status-completed{background:#f0f0f0;color:#888;}
+.season-body{padding:14px 18px;border-top:1px solid #f0f0f0;}
+.season-service{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 0;
+  border-bottom:1px solid #f8f8f8;
+}
+.season-service:last-child{border-bottom:none;}
+.ss-dot{width:8px;height:8px;border-radius:50%;background:var(--lime);margin-top:4px;flex-shrink:0;}
+.ss-text{font-size:13px;color:var(--text);line-height:1.4;}
+
+/* FERTILIZER PAGE */
+.fert-hero{
+  background:linear-gradient(135deg,#1a3508,#2d5a10);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:16px;
+  color:#fff;
+  text-align:center;
+}
+.fert-logo{font-size:40px;margin-bottom:8px;}
+.fert-name{font-family:'Playfair Display',serif;font-size:22px;margin-bottom:4px;}
+.fert-npk{font-family:'DM Mono',monospace;font-size:13px;color:var(--lime);margin-bottom:8px;}
+.fert-badge{
+  display:inline-block;
+  background:rgba(122,170,64,0.2);
+  border:1px solid rgba(122,170,64,0.4);
+  border-radius:20px;
+  padding:5px 14px;
+  font-size:11px;color:var(--lime);
+}
+
+.fert-schedule{background:#fff;border-radius:14px;overflow:hidden;margin-bottom:12px;box-shadow:0 2px 10px rgba(0,0,0,0.06);}
+.fert-row{
+  padding:14px 18px;
+  display:flex;align-items:center;gap:12px;
+  border-bottom:1px solid #f5f5f5;
+}
+.fert-row:last-child{border-bottom:none;}
+.fert-season-icon{font-size:20px;width:32px;text-align:center;}
+.fert-info{flex:1;}
+.fert-when{font-weight:600;font-size:14px;color:var(--text);}
+.fert-how{font-size:12px;color:var(--textl);margin-top:2px;}
+.fert-check{font-size:16px;}
+
+.fert-tip{
+  background:var(--mist);
+  border-left:3px solid var(--lime);
+  border-radius:0 10px 10px 0;
+  padding:14px 16px;
+  margin-bottom:12px;
+  font-size:13px;color:var(--moss);line-height:1.6;
+}
+
+/* BLOG PAGE */
+.blog-card{
+  background:#fff;
+  border-radius:14px;
+  margin-bottom:14px;
+  overflow:hidden;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  cursor:pointer;
+}
+.blog-tag{
+  background:var(--leaf);
+  color:#fff;
+  font-size:9px;font-weight:700;
+  padding:4px 10px;
+  text-transform:uppercase;letter-spacing:1px;
+  display:inline-block;
+}
+.blog-content{padding:14px 18px;}
+.blog-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--bark);margin-bottom:6px;line-height:1.3;}
+.blog-excerpt{font-size:12px;color:var(--textl);line-height:1.6;margin-bottom:10px;}
+.blog-meta{font-size:10px;color:#aaa;font-weight:500;}
+
+/* CONTACT PAGE */
+.contact-card{
+  background:#fff;
+  border-radius:14px;
+  padding:18px;
+  margin-bottom:12px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+  box-shadow:0 2px 10px rgba(0,0,0,0.06);
+  border:1px solid rgba(0,0,0,0.04);
+  transition:transform .15s;
+}
+.contact-card:active{transform:scale(0.97);}
+.contact-icon{font-size:28px;width:44px;height:44px;background:var(--mist);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-info{flex:1;}
+.contact-title{font-weight:600;font-size:14px;color:var(--text);}
+.contact-sub{font-size:12px;color:var(--textl);margin-top:2px;}
+.contact-arrow{color:var(--lime);font-size:18px;}
+
+.member-card{
+  background:linear-gradient(135deg,var(--gold),#a07020);
+  border-radius:16px;
+  padding:20px;
+  color:#fff;
+  margin-bottom:16px;
+  text-align:center;
+}
+.member-card-title{font-family:'Playfair Display',serif;font-size:18px;margin-bottom:4px;}
+.member-card-sub{font-size:12px;opacity:.8;line-height:1.5;}
+
+/* BLOG DETAIL */
+#blog-detail{display:none;position:fixed;inset:0;background:var(--cream);z-index:200;overflow-y:auto;}
+.blog-detail-header{
+  background:var(--bark);
+  padding:16px 20px;
+  display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;
+}
+.back-btn{color:var(--lime);font-size:20px;cursor:pointer;background:none;border:none;}
+.blog-detail-title-small{color:#fff;font-size:15px;font-weight:600;flex:1;}
+.blog-detail-body{padding:24px 20px 60px;}
+.blog-detail-tag{background:var(--leaf);color:#fff;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;display:inline-block;margin-bottom:14px;}
+.blog-detail-h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--bark);margin-bottom:8px;line-height:1.3;}
+.blog-detail-meta{font-size:11px;color:#aaa;margin-bottom:20px;}
+.blog-detail-content{font-size:14px;color:var(--text);line-height:1.8;}
+.blog-detail-content h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--bark);margin:20px 0 8px;}
+.blog-detail-content p{margin-bottom:14px;}
+.blog-detail-content ul{padding-left:20px;margin-bottom:14px;}
+.blog-detail-content li{margin-bottom:6px;}
+
+.resource-section{margin-bottom:24px;}
+.resource-category{
+  display:flex;align-items:center;gap:10px;
+  background:var(--bark);
+  color:#fff;
+  border-radius:12px 12px 0 0;
+  padding:14px 18px;
+  font-family:'Playfair Display',serif;
+  font-size:16px;
+}
+.resource-cat-icon{font-size:20px;}
+.resource-item{
+  background:#fff;
+  padding:14px 18px;
+  border-bottom:1px solid #f5f5f5;
+  cursor:pointer;
+  display:flex;align-items:center;gap:12px;
+  transition:background .15s;
+}
+.resource-item:last-child{border-bottom:none;border-radius:0 0 12px 12px;}
+.resource-item:active{background:#f8f8f8;}
+.ri-icon{font-size:20px;width:36px;text-align:center;flex-shrink:0;}
+.ri-info{flex:1;}
+.ri-title{font-weight:600;font-size:13px;color:var(--text);}
+.ri-sub{font-size:11px;color:var(--textl);margin-top:2px;}
+.ri-arrow{color:var(--lime);font-size:16px;}
+.ri-badge{background:var(--leaf);color:#fff;font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;text-transform:uppercase;}
+.video-item{
+  background:#0d1a08;
+  border-radius:12px;
+  padding:16px;
+  margin-bottom:10px;
+  display:flex;align-items:center;gap:14px;
+  cursor:pointer;
+}
+.video-thumb{
+  width:60px;height:60px;
+  background:var(--leaf);
+  border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;
+  flex-shrink:0;
+}
+.video-info{flex:1;}
+.video-title{font-size:13px;font-weight:600;color:#fff;margin-bottom:4px;}
+.video-sub{font-size:11px;color:rgba(255,255,255,0.5);}
+.qa-item{
+  background:#fff;
+  border-radius:12px;
+  padding:16px 18px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  cursor:pointer;
+}
+.qa-q{font-weight:600;font-size:13px;color:var(--bark);margin-bottom:0;display:flex;align-items:center;gap:8px;}
+.qa-q::before{content:'Q';background:var(--lime);color:var(--bark);font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px;flex-shrink:0;}
+.qa-a{font-size:12px;color:var(--textl);line-height:1.6;margin-top:10px;display:none;padding-top:10px;border-top:1px solid #f0f0f0;}
+.qa-a::before{content:'A  ';font-weight:700;color:var(--leaf);}
+.qa-item.open .qa-a{display:block;}
+.update-item{
+  background:#fff;
+  border-radius:12px;
+  padding:16px 18px;
+  margin-bottom:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.05);
+  border-left:3px solid var(--lime);
+}
+.update-date{font-size:10px;color:#aaa;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.update-title{font-weight:600;font-size:14px;color:var(--bark);margin-bottom:4px;}
+.update-body{font-size:12px;color:var(--textl);line-height:1.6;}
+
+</style>
+</head>
+<body>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="login-logo">🌳</div>
+    <div class="login-title">ATX Trees</div>
+    <div class="login-sub">Your personal window to ATX Trees — trees, care, tips, and more.</div>
+    <div class="login-tagline">🤝 Buy from us and you're part of the team.<br>This app is your exclusive member benefit.</div>
+    <input class="login-input" id="login-phone" type="tel" placeholder="Your phone number" maxlength="14">
+    <input class="login-input" id="login-name" type="text" placeholder="Your name">
+    <button class="login-btn" onclick="doLogin()">Enter My Account →</button>
+    <div class="login-footer">For ATX Trees customers only.<br>Not a customer yet? Call (512) 749-5149 to get started.</div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="app-header">
+    <div class="app-header-logo">🌳</div>
+    <div>
+      <div class="app-header-title">ATX Trees</div>
+      <div class="app-header-name" id="header-name">Member</div>
+    </div>
+    <div class="member-badge">Team Member</div>
+  </div>
+
+  <!-- HOME -->
+  <div class="page active" id="page-home">
+    <div class="welcome-card">
+      <div class="welcome-greeting">Welcome back,</div>
+      <div class="welcome-name" id="welcome-name">Member</div>
+      <div class="welcome-status"><span class="welcome-dot"></span> Active Team Member</div>
+    </div>
+
+    <div class="next-service-card">
+      <div class="nsc-label">⏰ Next Service</div>
+      <div class="nsc-title">🍂 Fall Deep Root Fertilization</div>
+      <div class="nsc-date">Scheduled: October 2026</div>
+      <div class="nsc-desc">Deep root fertilizer application + insect & disease treatment + general health inspection to prepare your trees for winter.</div>
+    </div>
+
+    <div class="quick-grid">
+      <div class="quick-card" onclick="showPage('schedule')">
+        <div class="quick-card-icon">📅</div>
+        <div class="quick-card-title">My Schedule</div>
+        <div class="quick-card-sub">4 seasonal visits</div>
+      </div>
+      <div class="quick-card" onclick="showPage('fertilizer')">
+        <div class="quick-card-icon">🧪</div>
+        <div class="quick-card-title">Root Revive</div>
+        <div class="quick-card-sub">My fert schedule</div>
+      </div>
+      <div class="quick-card" onclick="showPage('blog')">
+        <div class="quick-card-icon">🌿</div>
+        <div class="quick-card-title">Seasonal Tips</div>
+        <div class="quick-card-sub">From Albert</div>
+      </div>
+      <div class="quick-card" onclick="showPage('contact')">
+        <div class="quick-card-icon">💬</div>
+        <div class="quick-card-title">Contact Us</div>
+        <div class="quick-card-sub">Direct line</div>
+      </div>
+    </div>
+
+    <div class="next-service-card" style="border-left-color:var(--gold)">
+      <div class="nsc-label">🌱 Albert's Fall Tip</div>
+      <div class="nsc-title">Prepare Your Trees Now</div>
+      <div class="nsc-desc">"Fall is the most important time to fertilize here in the Hill Country. Deep root feeding before dormancy sets your trees up for explosive spring growth. Don't skip it!" — Albert</div>
+    </div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="page" id="page-schedule">
+    <div class="sec-header">My Tree Care Schedule</div>
+    <div class="sec-sub">Your personalized 4-season program</div>
+
+    <div class="season-card">
+      <div class="season-header" style="background:#e8f5ff">
+        <div class="season-icon">❄️</div>
+        <div class="season-name">Winter — Protect & Monitor</div>
+        <div class="season-status status-completed">Done ✓</div>
+      </div>
+      <div class="season-body">
+        <div class="season-service"><div class="ss-dot" style="background:#3b82f6"></div><div class="ss-text">Freeze protection treatments</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#3b82f6"></div><div class="ss-text">Hydration testing — prevent winter drought stress</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#3b82f6"></div><div class="ss-text">Structural inspection — spot weak limbs before ice hits</div></div>
+      </div>
+    </div>
+
+    <div class="season-card">
+      <div class="season-header" style="background:#f0fff0">
+        <div class="season-icon">🌸</div>
+        <div class="season-name">Spring — Boost Growth</div>
+        <div class="season-status status-completed">Done ✓</div>
+      </div>
+      <div class="season-body">
+        <div class="season-service"><div class="ss-dot" style="background:#22c55e"></div><div class="ss-text">Spring fertilizer for lush leaf growth</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#22c55e"></div><div class="ss-text">Root stimulant to jumpstart root activity</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#22c55e"></div><div class="ss-text">Insect control — borers, aphids, caterpillars</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#22c55e"></div><div class="ss-text">General tree health check</div></div>
+      </div>
+    </div>
+
+    <div class="season-card">
+      <div class="season-header" style="background:#fffbe8">
+        <div class="season-icon">☀️</div>
+        <div class="season-name">Summer — Heat & Drought Protection</div>
+        <div class="season-status status-completed">Done ✓</div>
+      </div>
+      <div class="season-body">
+        <div class="season-service"><div class="ss-dot" style="background:#f59e0b"></div><div class="ss-text">Deep root watering during dry spells</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#f59e0b"></div><div class="ss-text">Soil moisture monitoring</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#f59e0b"></div><div class="ss-text">Pest & disease check</div></div>
+      </div>
+    </div>
+
+    <div class="season-card">
+      <div class="season-header" style="background:#fff5e8">
+        <div class="season-icon">🍂</div>
+        <div class="season-name">Fall — Prepare for Winter</div>
+        <div class="season-status status-active">Coming Up</div>
+      </div>
+      <div class="season-body">
+        <div class="season-service"><div class="ss-dot" style="background:#ea580c"></div><div class="ss-text">Deep root fertilizer — feeds trees before dormancy</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#ea580c"></div><div class="ss-text">Root stimulant for cold stress protection</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#ea580c"></div><div class="ss-text">Insect & disease treatment — stops pests before they overwinter</div></div>
+        <div class="season-service"><div class="ss-dot" style="background:#ea580c"></div><div class="ss-text">General tree health inspection</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FERTILIZER -->
+  <div class="page" id="page-fertilizer">
+    <div class="fert-hero">
+      <div class="fert-logo">🌱</div>
+      <div class="fert-name">Root Revive</div>
+      <div class="fert-npk">N-P-K: 10 — 20 — 10</div>
+      <div class="fert-badge">100% Organic · Made in Texas · No Synthetics</div>
+    </div>
+
+    <div class="sec-header">My Application Schedule</div>
+
+    <div class="fert-schedule">
+      <div class="fert-row">
+        <div class="fert-season-icon">🌸</div>
+        <div class="fert-info">
+          <div class="fert-when">Early Spring — Bud Break</div>
+          <div class="fert-how">1 cup (1 lb) per inch of trunk diameter around the base</div>
+        </div>
+        <div class="fert-check">✅</div>
+      </div>
+      <div class="fert-row">
+        <div class="fert-season-icon">🌿</div>
+        <div class="fert-info">
+          <div class="fert-when">Late Spring — Growth Surge</div>
+          <div class="fert-how">1 cup (1 lb) per inch of trunk diameter around the base</div>
+        </div>
+        <div class="fert-check">✅</div>
+      </div>
+      <div class="fert-row">
+        <div class="fert-season-icon">🍂</div>
+        <div class="fert-info">
+          <div class="fert-when">Early Fall — Root Development</div>
+          <div class="fert-how">1 cup (1 lb) per inch of trunk diameter around the base</div>
+        </div>
+        <div class="fert-check">⏳</div>
+      </div>
+    </div>
+
+    <div class="fert-tip">
+      💡 <strong>Pro Tip from Albert:</strong> Apply Root Revive in a ring around the drip line of your tree — not right at the trunk. This is where the feeder roots are actively absorbing nutrients.
+    </div>
+
+    <div class="fert-tip">
+      🌱 <strong>Why Root Revive?</strong> Our elevated phosphorus (20) is specifically formulated to stimulate feeder root growth in Texas Hill Country soil. No burning, no overfeeding — time-released so your trees get fed at exactly the right time.
+    </div>
+
+    <div class="next-service-card" style="border-left-color:var(--gold);cursor:pointer" onclick="window.location='tel:5127495149'">
+      <div class="nsc-label">🛒 Order More Root Revive</div>
+      <div class="nsc-title">Call Albert to Order</div>
+      <div class="nsc-date">(512) 749-5149</div>
+      <div class="nsc-desc">Available for purchase — perfect for new plantings and established trees. Team members get priority ordering.</div>
+    </div>
+  </div>
+
+  <!-- BLOG -->
+  <div class="page" id="page-blog">
+    <div class="sec-header">Seasonal Tips & Updates</div>
+    <div class="sec-sub">From Albert & the ATX Trees team</div>
+
+    <div class="blog-card" onclick="showBlog(0)">
+      <div class="blog-tag">🍂 Fall 2026</div>
+      <div class="blog-content">
+        <div class="blog-title">Why Fall Fertilization is the Most Important Thing You Can Do for Your Trees</div>
+        <div class="blog-excerpt">Most people think spring is the time to feed trees. Albert explains why fall is actually the most critical window — and what happens to your trees if you skip it.</div>
+        <div class="blog-meta">By Albert Sedillo · August 2026 · 4 min read</div>
+      </div>
+    </div>
+
+    <div class="blog-card" onclick="showBlog(1)">
+      <div class="blog-tag">🌳 Privacy Trees</div>
+      <div class="blog-content">
+        <div class="blog-title">The 5 Best Privacy Trees for the Texas Hill Country</div>
+        <div class="blog-excerpt">Not all privacy trees are created equal. After planting thousands of trees across Dripping Springs and the Hill Country, here are Albert's top 5 picks for year-round privacy.</div>
+        <div class="blog-meta">By Albert Sedillo · July 2026 · 6 min read</div>
+      </div>
+    </div>
+
+    <div class="blog-card" onclick="showBlog(2)">
+      <div class="blog-tag">🌱 Root Revive</div>
+      <div class="blog-content">
+        <div class="blog-title">How to Apply Root Revive the Right Way</div>
+        <div class="blog-excerpt">A step-by-step guide to getting the most out of your Root Revive application. Common mistakes, timing tips, and why the drip line matters.</div>
+        <div class="blog-meta">By Albert Sedillo · June 2026 · 3 min read</div>
+      </div>
+    </div>
+
+    <div class="blog-card" onclick="showBlog(3)">
+      <div class="blog-tag">☀️ Summer Care</div>
+      <div class="blog-content">
+        <div class="blog-title">Keeping Your Trees Alive Through a Texas Summer</div>
+        <div class="blog-excerpt">Texas summers are brutal. Here's exactly what your trees need to survive the heat and drought — and the signs that tell you they're struggling before it's too late.</div>
+        <div class="blog-meta">By Albert Sedillo · May 2026 · 5 min read</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="page" id="page-contact">
+    <div class="member-card">
+      <div class="member-card-title">🤝 You're Part of the Team</div>
+      <div class="member-card-sub">As an ATX Trees team member, you have a direct line to Albert and the crew. We're always here for you.</div>
+    </div>
+
+    <div class="sec-header">Get in Touch</div>
+
+    <div class="contact-card" onclick="window.location='tel:5127495149'">
+      <div class="contact-icon">📞</div>
+      <div class="contact-info">
+        <div class="contact-title">Call ATX Trees</div>
+        <div class="contact-sub">(512) 749-5149 · Mon-Fri 9AM-5PM</div>
+      </div>
+      <div class="contact-arrow">›</div>
+    </div>
+
+    <div class="contact-card" onclick="window.location='sms:5127495149'">
+      <div class="contact-icon">💬</div>
+      <div class="contact-info">
+        <div class="contact-title">Text Albert</div>
+        <div class="contact-sub">Send a text directly to the team</div>
+      </div>
+      <div class="contact-arrow">›</div>
+    </div>
+
+    <div class="contact-card" onclick="window.location='mailto:albert@atxtrees.com'">
+      <div class="contact-icon">✉️</div>
+      <div class="contact-info">
+        <div class="contact-title">Email Albert</div>
+        <div class="contact-sub">albert@atxtrees.com</div>
+      </div>
+      <div class="contact-arrow">›</div>
+    </div>
+
+    <div class="contact-card" onclick="window.open('https://atxtrees.com','_blank')">
+      <div class="contact-icon">🌐</div>
+      <div class="contact-info">
+        <div class="contact-title">Visit Our Website</div>
+        <div class="contact-sub">atxtrees.com</div>
+      </div>
+      <div class="contact-arrow">›</div>
+    </div>
+
+    <div class="contact-card" onclick="window.open('https://maps.apple.com/?address=24250+Ranch+Rd+12,+Dripping+Springs,+TX+78620','_blank')">
+      <div class="contact-icon">📍</div>
+      <div class="contact-info">
+        <div class="contact-title">Visit Our Nursery</div>
+        <div class="contact-sub">24250 Ranch Rd 12, Dripping Springs TX</div>
+      </div>
+      <div class="contact-arrow">›</div>
+    </div>
+
+    <div style="margin-top:20px;text-align:center">
+      <button onclick="doLogout()" style="background:none;border:1px solid #ccc;border-radius:8px;padding:10px 24px;font-size:13px;color:#888;cursor:pointer;font-family:'Inter',sans-serif">Sign Out</button>
+    </div>
+  </div>
+
+
+  <!-- RESOURCES -->
+  <div class="page" id="page-resources">
+    <div class="sec-header">Resource Center</div>
+    <div class="sec-sub">Everything you need to know about your trees</div>
+
+    <!-- ABOUT TREES -->
+    <div class="resource-section">
+      <div class="resource-category"><span class="resource-cat-icon">🌳</span>About Our Trees</div>
+      <div class="resource-item" onclick="showResourceDetail('privacy')">
+        <div class="ri-icon">🔒</div>
+        <div class="ri-info"><div class="ri-title">Privacy Trees Guide</div><div class="ri-sub">Best varieties, spacing, growth rates</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('shade')">
+        <div class="ri-icon">☁️</div>
+        <div class="ri-info"><div class="ri-title">Shade Trees for Texas</div><div class="ri-sub">Species that thrive in Hill Country heat</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('native')">
+        <div class="ri-icon">🌿</div>
+        <div class="ri-info"><div class="ri-title">Native Texas Trees</div><div class="ri-sub">Low maintenance, drought tough</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('newplanting')">
+        <div class="ri-icon">🌱</div>
+        <div class="ri-info"><div class="ri-title">New Tree Care — First Year</div><div class="ri-sub">Critical steps after planting</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- WARRANTY -->
+    <div class="resource-section">
+      <div class="resource-category" style="background:#8a1a1a"><span class="resource-cat-icon">🛡️</span>Warranty & Tree Problems</div>
+      <div class="resource-item" onclick="showResourceDetail('warranty')">
+        <div class="ri-icon">📋</div>
+        <div class="ri-info"><div class="ri-title">Understanding Your Warranty</div><div class="ri-sub">What's covered and how to file a claim</div></div>
+        <div class="ri-badge">Important</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('dying')">
+        <div class="ri-icon">🚨</div>
+        <div class="ri-info"><div class="ri-title">My Tree Looks Dead — Now What?</div><div class="ri-sub">How to tell and what to do</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('pests')">
+        <div class="ri-icon">🐛</div>
+        <div class="ri-info"><div class="ri-title">Common Pests & Diseases</div><div class="ri-sub">Identify and treat before it's too late</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- DROUGHT -->
+    <div class="resource-section">
+      <div class="resource-category" style="background:#6a4010"><span class="resource-cat-icon">☀️</span>Drought Management</div>
+      <div class="resource-item" onclick="showResourceDetail('drought')">
+        <div class="ri-icon">💧</div>
+        <div class="ri-info"><div class="ri-title">Drought Survival Guide</div><div class="ri-sub">Watering schedules, signs of stress</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('watering')">
+        <div class="ri-icon">🌊</div>
+        <div class="ri-info"><div class="ri-title">How to Water Your Trees Right</div><div class="ri-sub">Deep watering vs shallow — the difference</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+      <div class="resource-item" onclick="showResourceDetail('mulch')">
+        <div class="ri-icon">🍂</div>
+        <div class="ri-info"><div class="ri-title">Mulching for Drought Protection</div><div class="ri-sub">The $20 trick that saves trees</div></div>
+        <div class="ri-arrow">›</div>
+      </div>
+    </div>
+
+    <!-- VIDEOS -->
+    <div class="resource-section">
+      <div class="resource-category" style="background:#1a1a3a"><span class="resource-cat-icon">🎥</span>Videos from Albert</div>
+      <div class="video-item" onclick="alert('Video coming soon! Follow ATX Trees on Facebook for the latest videos.')">
+        <div class="video-thumb">▶️</div>
+        <div class="video-info">
+          <div class="video-title">How to Apply Root Revive Fertilizer</div>
+          <div class="video-sub">3 min · Albert walks you through it step by step</div>
+        </div>
+      </div>
+      <div class="video-item" onclick="alert('Video coming soon! Follow ATX Trees on Facebook for the latest videos.')">
+        <div class="video-thumb">▶️</div>
+        <div class="video-info">
+          <div class="video-title">Planting a Privacy Tree — Start to Finish</div>
+          <div class="video-sub">8 min · From hole digging to first watering</div>
+        </div>
+      </div>
+      <div class="video-item" onclick="alert('Video coming soon! Follow ATX Trees on Facebook for the latest videos.')">
+        <div class="video-thumb">▶️</div>
+        <div class="video-info">
+          <div class="video-title">Is My Tree Dead or Dormant?</div>
+          <div class="video-sub">4 min · The scratch test and other ways to know</div>
+        </div>
+      </div>
+      <div class="video-item" onclick="alert('Video coming soon! Follow ATX Trees on Facebook for the latest videos.')">
+        <div class="video-thumb">▶️</div>
+        <div class="video-info">
+          <div class="video-title">Fall Prep — What To Do Before Winter</div>
+          <div class="video-sub">6 min · Albert's fall checklist for Hill Country trees</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q&A -->
+    <div class="resource-section">
+      <div class="resource-category" style="background:#1a2a3a"><span class="resource-cat-icon">❓</span>Q&amp;A with Albert</div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">How often should I water a newly planted tree?</div>
+        <div class="qa-a">For the first 2 weeks, water every day. Then every 2-3 days for the first month. After that, deep water 1-2 times per week through the first summer. The goal is to keep the root ball moist but never waterlogged. Stick your finger 2 inches into the soil — if it's dry, water it.</div>
+      </div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">My tree dropped all its leaves. Is it dead?</div>
+        <div class="qa-a">Not necessarily! Do the scratch test — scratch a small section of bark on a branch with your fingernail. If you see green underneath, the tree is alive. If it's brown and dry all the way through, that branch may be dead. Try multiple branches before deciding. Call us if you're unsure — (512) 749-5149.</div>
+      </div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">How long before my privacy trees create a full screen?</div>
+        <div class="qa-a">It depends on the species and size you planted. Nellie R. Stevens Holly grows 3-4 feet per year. Eastern Red Cedar grows 1-2 feet per year. If you planted 65-gallon trees, you'll have significant screening in 2-3 years and full privacy in 4-5. Smaller sizes take longer. Root Revive and TCP significantly speed this up.</div>
+      </div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">What does my 1-year warranty cover?</div>
+        <div class="qa-a">Your warranty covers tree death due to disease, pests, or factors within our control during the first year after planting. It does not cover death due to drought stress if proper watering was not maintained, freeze damage from unusual weather events, or physical damage. When in doubt, call us — we'll always try to make it right.</div>
+      </div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">When is the best time to prune my trees?</div>
+        <div class="qa-a">For most Texas trees, late winter (February-March) before new growth begins is ideal. This minimizes stress and reduces disease risk. Avoid heavy pruning in summer when trees are already heat-stressed. Light shaping can be done anytime. Our TCP visits include pruning assessments — we'll let you know if your trees need attention.</div>
+      </div>
+      <div class="qa-item" onclick="toggleQA(this)">
+        <div class="qa-q">Can I plant trees in summer in Texas?</div>
+        <div class="qa-a">We don't recommend it unless absolutely necessary. Summer planting stresses trees significantly and requires much more intensive watering. Fall (October-November) and early spring (February-March) are the best times to plant in the Hill Country. If you must plant in summer, make sure you're committed to daily watering and have quality mulch around the base.</div>
+      </div>
+    </div>
+
+    <!-- UPDATES -->
+    <div class="resource-section">
+      <div class="resource-category" style="background:#1a3a1a"><span class="resource-cat-icon">📢</span>Updates from ATX Trees</div>
+      <div class="update-item">
+        <div class="update-date">August 2026</div>
+        <div class="update-title">🍂 Fall TCP Service Starting October</div>
+        <div class="update-body">We'll be reaching out to schedule your fall visits starting in October. This is our most important service of the year — don't miss it! Call (512) 749-5149 to get on the schedule early.</div>
+      </div>
+      <div class="update-item">
+        <div class="update-date">August 2026</div>
+        <div class="update-title">🌱 Root Revive Now Available for Purchase</div>
+        <div class="update-body">Team members can now order Root Revive directly. Call Albert at (512) 749-5149 or stop by the nursery at 24250 Ranch Rd 12, Dripping Springs.</div>
+      </div>
+      <div class="update-item">
+        <div class="update-date">July 2026</div>
+        <div class="update-title">☀️ Drought Advisory — Hill Country</div>
+        <div class="update-body">We're in a drought period. If you have newly planted trees, please increase watering frequency. Deep water 2-3x per week. If your trees look stressed, call us immediately — don't wait.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottom-nav">
+    <button class="nav-item active" id="nav-home" onclick="showPage('home')"><span>🏠</span>Home</button>
+    <button class="nav-item" id="nav-schedule" onclick="showPage('schedule')"><span>📅</span>Schedule</button>
+    <button class="nav-item" id="nav-fertilizer" onclick="showPage('fertilizer')"><span>🌱</span>Root Revive</button>
+    <button class="nav-item" id="nav-blog" onclick="showPage('blog')"><span>🌿</span>Tips</button>
+    <button class="nav-item" id="nav-resources" onclick="showPage('resources')"><span>📚</span>Resources</button>
+    <button class="nav-item" id="nav-contact" onclick="showPage('contact')"><span>💬</span>Contact</button>
+  </div>
+</div>
+
+<!-- BLOG DETAIL -->
+<div id="blog-detail">
+  <div class="blog-detail-header">
+    <button class="back-btn" onclick="closeBlog()">‹</button>
+    <div class="blog-detail-title-small">ATX Trees Tips</div>
+  </div>
+  <div class="blog-detail-body" id="blog-detail-body"></div>
+</div>
+
+<script>
+var BLOGS = [
+  {
+    tag:'🍂 Fall 2026',
+    title:'Why Fall Fertilization is the Most Important Thing You Can Do for Your Trees',
+    meta:'By Albert Sedillo · August 2026 · 4 min read',
+    content:`
+      <p>Most homeowners think about their trees in spring — when everything is blooming and green. But here in the Texas Hill Country, I've learned after 20+ years of planting and caring for trees that <strong>fall is the real game-changer.</strong></p>
+      <h3>What Happens Underground in Fall</h3>
+      <p>When temperatures drop, your trees don't stop growing — they just shift their energy underground. Root systems stay active well into winter, absorbing nutrients and building reserves for next spring's growth surge. If your trees go into winter hungry, you'll see the difference in spring.</p>
+      <h3>What We Apply in Fall</h3>
+      <p>During our fall TCP visit, we apply:</p>
+      <ul>
+        <li>Deep root fertilizer with elevated phosphorus to stimulate root growth</li>
+        <li>Root stimulant to help trees handle cold stress</li>
+        <li>Insect & disease treatment to stop pests from overwintering in your soil</li>
+        <li>Full health inspection to catch any issues before winter hits</li>
+      </ul>
+      <h3>The Root Revive Difference</h3>
+      <p>Our own Root Revive fertilizer has an N-P-K of 10-20-10. That elevated phosphorus (20) is specifically designed to stimulate feeder root development — exactly what your trees need heading into winter. Time-released formula means steady feeding, no burning.</p>
+      <p><strong>Bottom line:</strong> Skip spring fertilization and your trees will survive. Skip fall fertilization and you'll spend next summer wondering why your trees look stressed. Don't skip fall.</p>
+    `
+  },
+  {
+    tag:'🌳 Privacy Trees',
+    title:'The 5 Best Privacy Trees for the Texas Hill Country',
+    meta:'By Albert Sedillo · July 2026 · 6 min read',
+    content:`
+      <p>After planting thousands of trees across Dripping Springs, Wimberley, Bee Cave, and surrounding areas, I've learned which trees thrive here and which ones struggle. Here are my top 5 picks for privacy in our specific climate.</p>
+      <h3>1. Eastern Red Cedar</h3>
+      <p>This is the workhorse of Texas privacy trees. Drought tolerant, fast growing, and provides year-round screening. Native to Texas so it knows exactly how to handle our weather. The only downside — cedar allergies. If you're a cedar fever sufferer, consider alternatives.</p>
+      <h3>2. Live Oak</h3>
+      <p>The king of Texas trees. Semi-evergreen, incredibly long-lived, and stunning when mature. Slower to establish but worth every year of wait. Pairs beautifully with native landscape.</p>
+      <h3>3. Nellie R. Stevens Holly</h3>
+      <p>My go-to for fast privacy that looks refined. Grows 3-4 feet per year once established, stays dense, and produces beautiful red berries in winter. Handles Hill Country heat and rocky soil extremely well.</p>
+      <h3>4. Wax Myrtle</h3>
+      <p>Perfect for creek buffers and natural-looking screens. Fast growing, fragrant, and extremely low maintenance once established. Not as formal as holly but beautiful in a native landscape setting.</p>
+      <h3>5. Arizona Cypress</h3>
+      <p>Fast, tall, and drought tolerant. Creates a dramatic, columnar screen quickly. Excellent for blocking views from neighboring two-story homes. Not native but performs exceptionally well in our climate.</p>
+      <p><strong>Pro tip:</strong> For the fastest, most effective privacy screen, plant your trees in a staggered double row. Costs more upfront but you'll have full privacy in 2-3 years instead of 5-7.</p>
+    `
+  },
+  {
+    tag:'🌱 Root Revive',
+    title:'How to Apply Root Revive the Right Way',
+    meta:'By Albert Sedillo · June 2026 · 3 min read',
+    content:`
+      <p>Root Revive is our own 100% organic fertilizer, made right here in Texas. But even the best fertilizer won't work if you apply it wrong. Here's exactly how to do it.</p>
+      <h3>Step 1: Measure Your Trunk</h3>
+      <p>Measure the diameter of your tree trunk in inches at about 4 feet off the ground. This tells you how much to apply. <strong>1 cup (1 lb) per inch of trunk diameter.</strong></p>
+      <h3>Step 2: Find the Drip Line</h3>
+      <p>The drip line is the outer edge of your tree's canopy — where rain drips off the leaves. This is where the feeder roots are actively absorbing. <strong>Do NOT apply right at the trunk.</strong></p>
+      <h3>Step 3: Apply in a Ring</h3>
+      <p>Scatter Root Revive in a ring around the tree following the drip line. No need to dig it in — just broadcast on top of the soil or mulch. Rain and irrigation will carry it down to the roots.</p>
+      <h3>Common Mistakes</h3>
+      <ul>
+        <li>Applying too close to the trunk — feeder roots aren't there</li>
+        <li>Applying too much — more is not better, stick to the formula</li>
+        <li>Applying in summer heat — best results in early spring and fall</li>
+        <li>Not watering after application — moisture activates the time-release</li>
+      </ul>
+      <p>Questions? Call Albert at (512) 749-5149. We're always happy to walk you through it.</p>
+    `
+  },
+  {
+    tag:'☀️ Summer Care',
+    title:'Keeping Your Trees Alive Through a Texas Summer',
+    meta:'By Albert Sedillo · May 2026 · 5 min read',
+    content:`
+      <p>Texas summers are not for the faint of heart — and neither are your trees when they're dealing with 100°+ heat and weeks without rain. Here's what I've learned about keeping trees alive through our brutal summers.</p>
+      <h3>The #1 Killer: Summer Drought Stress</h3>
+      <p>Most trees we get called out on in fall that look dead or struggling — they didn't die in fall. They got stressed in summer and finally gave out. By the time you notice the symptoms, the damage is already done.</p>
+      <h3>Water Deep, Not Often</h3>
+      <p>Shallow, frequent watering trains roots to stay near the surface where they're vulnerable to heat. Instead, water deeply once or twice a week. You want moisture reaching 12-18 inches down. Use a soil probe or long screwdriver to test.</p>
+      <h3>Signs Your Tree is Struggling</h3>
+      <ul>
+        <li>Leaves curling or wilting in the morning (before the heat of the day)</li>
+        <li>Premature leaf drop</li>
+        <li>Scorched or brown leaf edges</li>
+        <li>Bark cracking or splitting</li>
+        <li>Unusually small leaf size</li>
+      </ul>
+      <h3>Mulch is Your Best Friend</h3>
+      <p>A 3-4 inch layer of organic mulch around your trees reduces soil temperature, retains moisture, and slowly feeds your trees as it breaks down. Keep it away from the trunk to prevent rot.</p>
+      <h3>When to Call Us</h3>
+      <p>If you're seeing multiple stress signs on the same tree, don't wait. Summer stress leads to fall fungal infections and winter die-off. Call Albert at (512) 749-5149 — a TCP check-in might be all you need.</p>
+    `
+  }
+];
+
+function doLogin() {
+  var phone = document.getElementById('login-phone').value.trim();
+  var name = document.getElementById('login-name').value.trim();
+  if (!phone || !name) { alert('Please enter your phone number and name.'); return; }
+  localStorage.setItem('atx_member_name', name);
+  localStorage.setItem('atx_member_phone', phone);
+  showApp(name);
+}
+
+function showApp(name) {
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('welcome-name').textContent = name.split(' ')[0];
+  document.getElementById('header-name').textContent = name;
+}
+
+function doLogout() {
+  localStorage.removeItem('atx_member_name');
+  localStorage.removeItem('atx_member_phone');
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.nav-item').forEach(function(n){n.classList.remove('active');});
+  document.getElementById('page-'+id).classList.add('active');
+  var navEl = document.getElementById('nav-'+id);
+  if(navEl) navEl.classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function showBlog(idx) {
+  var b = BLOGS[idx];
+  document.getElementById('blog-detail-body').innerHTML =
+    '<div class="blog-detail-tag">'+b.tag+'</div>'
+    +'<div class="blog-detail-h1">'+b.title+'</div>'
+    +'<div class="blog-detail-meta">'+b.meta+'</div>'
+    +'<div class="blog-detail-content">'+b.content+'</div>';
+  document.getElementById('blog-detail').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+function closeBlog() {
+  document.getElementById('blog-detail').style.display = 'none';
+}
+
+// Auto-login if returning
+
+function toggleQA(el) {
+  el.classList.toggle('open');
+}
+
+var RESOURCE_DETAILS = {
+  privacy: {title:"Privacy Trees Guide",tag:"Privacy Trees",content:"<p>Privacy trees are our specialty. Here in the Hill Country, privacy is premium and the right tree makes all the difference.</p><h3>Best Privacy Trees for Texas</h3><ul><li><b>Nellie R. Stevens Holly</b> - Fast growing (3-4 ft/yr), dense, year-round</li><li><b>Eastern Red Cedar</b> - Native, drought tolerant, year-round screening</li><li><b>Wax Myrtle</b> - Fast, fragrant, great for natural settings</li><li><b>Arizona Cypress</b> - Tall, columnar, dramatic screening fast</li><li><b>Live Oak</b> - The king of Texas trees, semi-evergreen</li></ul><h3>Spacing Tips</h3><p>For maximum privacy fastest, plant in a staggered double row. Single row: 6-8 feet apart. Double row: 8-10 feet apart, offset by 4 feet. Call Albert for a free consultation - (512) 749-5149.</p>"},
+  warranty: {title:"Understanding Your Warranty",tag:"Warranty",content:"<p>Every tree we plant comes with a <b>1-year warranty</b> included in the price.</p><h3>What is Covered</h3><ul><li>Tree death due to disease or pest infestation</li><li>Trees that fail to establish despite proper care</li></ul><h3>What is NOT Covered</h3><ul><li>Death due to drought stress if proper watering was not maintained</li><li>Freeze damage from extreme weather events</li><li>Physical damage or customer neglect</li></ul><h3>How to File a Claim</h3><p>Call Albert directly at (512) 749-5149. We take every warranty issue personally.</p>"},
+  drought: {title:"Drought Survival Guide",tag:"Drought",content:"<h3>Warning Signs of Drought Stress</h3><ul><li>Leaves wilting in the morning before heat of day</li><li>Premature leaf drop</li><li>Scorched or brown leaf edges</li><li>Smaller than normal leaf size</li></ul><h3>Emergency Watering</h3><p>Run a hose at a slow trickle at the drip line for 30-60 minutes. Do this every 2-3 days until stress signs subside.</p><h3>Long-Term Strategy</h3><ul><li>Deep water 1-2x per week</li><li>Apply 3-4 inches of organic mulch</li><li>Skip fertilizer during drought</li><li>Water early morning to reduce evaporation</li></ul><p>If trees are declining, call (512) 749-5149 immediately.</p>"},
+  dying: {title:"My Tree Looks Dead - Now What?",tag:"Tree Problems",content:"<h3>First: Do the Scratch Test</h3><p>Scratch a small section of bark with your fingernail. <b>Green underneath = alive.</b> Brown and dry = that branch may be dead. Test multiple branches before concluding the tree is dead.</p><h3>Common Causes</h3><ul><li>Drought stress (most common in Texas)</li><li>Overwatering / root rot</li><li>Pest or disease infestation</li><li>Physical damage to roots or trunk</li></ul><p>Call Albert at (512) 749-5149. If within warranty period, we come assess at no charge.</p>"},
+  watering: {title:"How to Water Your Trees Right",tag:"Watering",content:"<h3>Deep vs Shallow Watering</h3><p>Shallow daily watering trains roots near the surface - vulnerable to heat and drought. Deep watering 1-2x per week forces roots to grow down where soil stays cooler.</p><h3>How to Deep Water</h3><p>Place a hose at the drip line and run at a slow trickle for 30-60 minutes. Goal: wet soil 12-18 inches deep.</p><h3>Seasonal Schedule</h3><ul><li><b>Spring:</b> 1x per week if no rain</li><li><b>Summer:</b> 2x per week minimum during drought</li><li><b>Fall:</b> 1x per week</li><li><b>Winter:</b> 1x every 2 weeks if no rain</li></ul>"},
+  mulch: {title:"Mulching for Drought Protection",tag:"Mulching",content:"<h3>Why Mulch Matters</h3><p>A proper mulch layer reduces soil temperature, retains moisture, suppresses weeds, and slowly feeds your trees.</p><h3>How to Mulch</h3><ul><li>Apply 3-4 inches of organic mulch (wood chips, shredded bark)</li><li>Cover the entire area under the tree canopy</li><li><b>Keep mulch 3-4 inches away from the trunk</b> - mulch against trunk causes rot</li></ul><h3>Never Make a Mulch Volcano</h3><p>Never pile mulch up against the trunk. The ring should look like a donut with the tree in the center.</p>"},
+  newplanting: {title:"New Tree Care - First Year",tag:"New Trees",content:"<h3>Watering Schedule</h3><ul><li><b>Days 1-14:</b> Water every day</li><li><b>Weeks 3-4:</b> Water every 2-3 days</li><li><b>Months 2-6:</b> Water deeply 1-2x per week</li><li><b>After 6 months:</b> Water deeply 1x per week through first summer</li></ul><h3>What Else to Do</h3><ul><li>Apply 3-4 inches of mulch immediately after planting</li><li>Do NOT fertilize for the first 4-6 weeks</li><li>After 6 weeks, apply Root Revive to stimulate root development</li></ul><p>Call us immediately if you see wilting that does not recover overnight - (512) 749-5149.</p>"},
+  shade: {title:"Shade Trees for Texas Hill Country",tag:"Shade Trees",content:"<h3>Best Shade Trees</h3><ul><li><b>Live Oak</b> - The classic Texas shade tree. Massive canopy, semi-evergreen.</li><li><b>Cedar Elm</b> - One of the toughest Texas natives. Good fall color.</li><li><b>Texas Red Oak</b> - Beautiful fall color, faster growing than Live Oak.</li><li><b>Bur Oak</b> - Massive, long-lived, drought tolerant.</li><li><b>Monterrey Oak</b> - Fast growing, large canopy, semi-evergreen.</li></ul><p>Call Albert for a free on-site consultation - (512) 749-5149.</p>"},
+  native: {title:"Native Texas Trees",tag:"Native Trees",content:"<h3>Why Native Trees?</h3><p>Native trees evolved with Texas climate and soil. Once established, they need minimal irrigation and support local wildlife.</p><h3>Our Favorites</h3><ul><li><b>Texas Mountain Laurel</b> - Purple flowers, amazing fragrance, evergreen</li><li><b>Possumhaw Holly</b> - Red berries all winter, great wildlife value</li><li><b>Anacacho Orchid Tree</b> - White flowers, very drought tolerant</li><li><b>Desert Willow</b> - Trumpet flowers, hummingbird magnet</li></ul><p>Water deeply to establish for 2 years, then step back. Natives prefer to be left alone once established.</p>"},
+  pests: {title:"Common Pests and Diseases",tag:"Pests and Disease",content:"<h3>Oak Wilt</h3><p>Most serious tree disease in Texas. Leaves turn brown from tips inward rapidly. Call us immediately - do NOT prune oaks between February and June.</p><h3>Cotton Root Rot</h3><p>Soil-borne fungus - leaves suddenly wilt and turn brown. Prevention through proper drainage and avoiding overwatering.</p><h3>Aphids and Spider Mites</h3><p>Common summer pests. Leaves look stippled or curled. Usually manageable with treatment included in TCP visits.</p><p>If anything looks off, call (512) 749-5149. Early detection saves trees.</p>"}
+};
+function showResourceDetail(key) {
+  var r = RESOURCE_DETAILS[key];
+  if (!r) return;
+  document.getElementById('blog-detail-body').innerHTML =
+    '<div class="blog-detail-tag">'+r.tag+'</div>'
+    +'<div class="blog-detail-h1">'+r.title+'</div>'
+    +'<div class="blog-detail-meta">ATX Trees Resource Guide</div>'
+    +'<div class="blog-detail-content">'+r.content+'</div>'
+    +'<div style="margin-top:28px;padding:16px;background:#e8f5e0;border-radius:12px;text-align:center">'
+    +'<div style="font-weight:700;color:#1a3010;margin-bottom:6px">Questions? Call Albert directly.</div>'
+    +'<a href="tel:5127495149" style="background:#1a3010;color:#fff;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;display:inline-block">(512) 749-5149</a>'
+    +'</div>';
+  document.getElementById('blog-detail').style.display = 'block';
+  window.scrollTo(0,0);
+}
+
+window.addEventListener('load', function() {
+  var name = localStorage.getItem('atx_member_name');
+  if (name) showApp(name);
+});
+</script>
+</body>
+</html>
